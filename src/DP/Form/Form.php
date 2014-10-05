@@ -2,32 +2,45 @@
 
 namespace DP\Form;
 
-class Form 
+class Form
 {
     protected $attributes = array();
-    protected $html;
-
-    public function openTag() 
+    protected $element = array();
+    
+    public function __construct($name=null) 
     {
-        $this->html = '<form';
-        foreach($this->attributes as $key => $value) {
-            $this->html .= " {$key}=\"{$value}\"";
+        if($name !== null) {
+            $this->attributes['name'] = $name;
         }
-        $this->html .= '>';
+    }
+    
+    public function openTag()
+    {
+        $form = '<form';
+        foreach($this->attributes as $name => $value) {
+            $form .= " {$name}=\"{$value}\"";
+        }
+        $form .= '>';
+        return $form;
     }
     
     public function closeTag() 
     {
-        $this->html .= '</form>';
+        return '</form>';
     }
     
-    public function setAttribute($attrib, $value) 
+    public function setAttribute($name, $value) 
     {
-        $this->attributes[$attrib] = $value;
+        $this->attributes[$name] = $value;
     }
     
-    public function render() 
+    public function addElement(InterfaceFormElement $element) 
     {
-        return $this->html;
+        $this->element[$element->getName()] = $element;
+    }
+    
+    public function render($name) 
+    {
+        return $this->element[$name]->render();
     }
 }
