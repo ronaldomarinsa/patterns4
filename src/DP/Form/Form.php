@@ -36,11 +36,16 @@ class Form
     
     public function addElement(InterfaceFormElement $element) 
     {
-        $this->element[$element->getName()] = $element;
+        $this->element[] = array('name' => $element->getName(), 'element' => $element);
     }
     
     public function render($name) 
     {
-        return $this->element[$name]->render();
+        foreach($this->element as $key => $element) {
+            if($element['name'] == $name) {
+                unset($this->element[$key]);
+                return $element['element']->render();
+            }
+        }
     }
 }
