@@ -42,7 +42,7 @@ class Select implements InterfaceFormElement
             $this->options .= "<option value=\"{$value}\">{$option}</option>";
         }
         
-        return $this;;
+        return $this;
     }
 
     public function setAttribute($name, $value) 

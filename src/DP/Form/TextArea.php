@@ -28,7 +28,7 @@ class TextArea implements InterfaceFormElement
         $this->textArea .= '>';
     }
     
-    public function closeTag() 
+    private function closeTag() 
     {
         $this->textArea .= '</textarea>';
     }

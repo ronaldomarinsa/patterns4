@@ -4,9 +4,9 @@ namespace DP\Form;
 
 class Input implements InterfaceFormElement
 {
-    private $input;
-    private $attributes = array();
-    private $name;
+    protected $input;
+    protected $attributes = array();
+    protected $name;
 
     public function __construct($name) 
     {
