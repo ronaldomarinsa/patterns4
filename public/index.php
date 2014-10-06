@@ -6,7 +6,6 @@ spl_autoload_register();
 
 $form = new DP\Form\Form('contato');
 $form->setAttribute('method', 'post');
-$form->setAttribute('action', '/contato/index');
 
 $inputText = new DP\Form\Input('nome');
 $inputText->setAttribute('type', 'text')
