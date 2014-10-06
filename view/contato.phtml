@@ -1,0 +1,17 @@
+<h3 class="text-left">Formulario de Exemplo</h3>;
+<?= $form->openTag()?>
+<h5 class="text-info">Nome</h5>
+<?=$form->render('nome')?>
+<h5 class="text-info">Cidade</h5>
+<?=$form->render('cidade')?>
+<h5 class="text-info">Descrição</h5>
+
+<?=$form->render('descricao')?>
+<h5 class="text-info">Sexo</h5>
+<h5 class="text-left">Feminino</h5>
+<?=$form->render('sexo')?>
+<h5 class="text-left">Masculino</h5>
+<?= $form->render('sexo')?>
+<br /><br />
+<?= $form->render('enviar')?>
+<?=$form->closeTag()?>
