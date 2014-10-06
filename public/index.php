@@ -14,7 +14,8 @@ $inputText->setAttribute('type', 'text')
 
 $inputSubmit = new DP\Form\Input('enviar');
 $inputSubmit->setAttribute('type', 'submit')                
-                ->setAttribute('value', 'Enviar');
+                ->setAttribute('value', 'Enviar')
+                ->setAttribute('class', 'btn');
 
 $textArea = new DP\Form\TextArea('descricao');
 
@@ -38,16 +39,6 @@ $form->addElement($select);
 $form->addElement($radioF);
 $form->addElement($radioM);
 
-echo 'Formulario de Exemplo<br/>';
-echo $form->openTag();
-echo 'Nome: ',$form->render('nome');
-
-echo '<br />';
-echo 'Cidade: ', $form->render('cidade');
-echo '<br />';
-echo 'Descricao: ', $form->render('descricao');
-echo '<br />';
-echo 'Feminino ', $form->render('sexo');
-echo '<br />';
-echo 'Masculino', $form->render('sexo');
-echo $form->closeTag();
+require_once __DIR__ . '/../layout/header.phtml';
+require_once __DIR__ . '/../view/contato.phtml';
+require_once __DIR__ . '/../layout/footer.phtml';
