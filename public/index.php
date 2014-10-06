@@ -24,10 +24,19 @@ $textArea->setAttribute('rows', '4')
 $select = new \DP\Form\Select('cidade');
 $select->setOptions(array('Sao Paulo', 'Rio de Janeiro', 'Manaus', 'Belo Horizonte'));
 
+$radioF = new DP\Form\Input('sexo');
+$radioF->setAttribute('type', 'radio')
+        ->setAttribute('value', 'f');
+$radioM = new DP\Form\Input('sexo');
+$radioM->setAttribute('type', 'radio')
+        ->setAttribute('value', 'm');
+
 $form->addElement($inputText);
 $form->addElement($inputSubmit);
 $form->addElement($textArea);
 $form->addElement($select);
+$form->addElement($radioF);
+$form->addElement($radioM);
 
 echo 'Formulario de Exemplo<br/>';
 echo $form->openTag();
@@ -37,6 +46,8 @@ echo '<br />';
 echo 'Cidade: ', $form->render('cidade');
 echo '<br />';
 echo 'Descricao: ', $form->render('descricao');
-
+echo '<br />';
+echo 'Feminino ', $form->render('sexo');
+echo '<br />';
+echo 'Masculino', $form->render('sexo');
 echo $form->closeTag();
-
