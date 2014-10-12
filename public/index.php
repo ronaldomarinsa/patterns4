@@ -1,10 +1,13 @@
 <?php
+require_once __DIR__ . '/../vendor/autoload.php';
 
-set_include_path(get_include_path() . PATH_SEPARATOR . '../src/');
+$di = new Aura\Di\Container(new Aura\Di\Factory());
+$di->set('form', new \DP\Form\Form(
+    new DP\Validator\Validator(new DP\Request\Request())
+    ));
 
-spl_autoload_register();
-
-$form = new DP\Form\Form('contato');
+$form = $di->get('form');
+$form->setAttribute('name', 'contato');
 $form->setAttribute('method', 'post');
 
 $inputText = new DP\Form\Input('nome');
@@ -31,12 +34,12 @@ $radioM = new DP\Form\Input('sexo');
 $radioM->setAttribute('type', 'radio')
         ->setAttribute('value', 'm');
 
-$form->addElement($inputText);
-$form->addElement($inputSubmit);
-$form->addElement($textArea);
-$form->addElement($select);
-$form->addElement($radioF);
-$form->addElement($radioM);
+$form->createField($inputText);
+$form->createField($inputSubmit);
+$form->createField($textArea);
+$form->createField($select);
+$form->createField($radioF);
+$form->createField($radioM);
 
 require_once __DIR__ . '/../layout/header.phtml';
 require_once __DIR__ . '/../view/contato.phtml';

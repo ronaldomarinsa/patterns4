@@ -1,0 +1,8 @@
+{
+    "require": {
+        "aura/di": "~2.0"
+    },
+    "autoload": {
+        "psr-0" :{"DP": "src/"}
+    }
+}

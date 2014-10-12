@@ -2,13 +2,17 @@
 
 namespace DP\Form;
 
+use DP\Validator\Validator;
+
 class Form
 {
     protected $attributes = array();
     protected $element = array();
-    
-    public function __construct($name=null) 
+    protected $validator;
+
+    public function __construct(Validator $validator, $name=null) 
     {
+        $this->validator = $validator;
         if($name !== null) {
             $this->attributes['name'] = $name;
         }
@@ -34,7 +38,7 @@ class Form
         $this->attributes[$name] = $value;
     }
     
-    public function addElement(InterfaceFormElement $element) 
+    public function createField(InterfaceFormElement $element) 
     {
         $this->element[] = array('name' => $element->getName(), 'element' => $element);
     }
