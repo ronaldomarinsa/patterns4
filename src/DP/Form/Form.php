@@ -4,18 +4,14 @@ namespace DP\Form;
 
 use DP\Validator\Validator;
 
-class Form
+class Form extends AbstractForm
 {
-    protected $attributes = array();
-    protected $element = array();
     protected $validator;
 
-    public function __construct(Validator $validator, $name=null) 
+    public function __construct(Validator $validator, $name)
     {
         $this->validator = $validator;
-        if($name !== null) {
-            $this->attributes['name'] = $name;
-        }
+        parent::__construct($name);
     }
     
     public function openTag()
@@ -28,27 +24,17 @@ class Form
         return $form;
     }
     
-    public function closeTag() 
+    public function closeTag()
     {
         return '</form>';
     }
-    
-    public function setAttribute($name, $value) 
+
+    public function render($name = null)
     {
-        $this->attributes[$name] = $value;
-    }
-    
-    public function createField(InterfaceFormElement $element) 
-    {
-        $this->element[] = array('name' => $element->getName(), 'element' => $element);
-    }
-    
-    public function render($name) 
-    {
-        foreach($this->element as $key => $element) {
-            if($element['name'] == $name) {
-                unset($this->element[$key]);
-                return $element['element']->render();
+        foreach($this->fields as $key => $field) {
+            if($field->getName() == $name) {
+                unset($this->fields[$key]);
+                return $field->render();
             }
         }
     }

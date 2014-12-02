@@ -2,48 +2,23 @@
 
 namespace DP\Form;
 
-class Input implements InterfaceFormElement
+class Input extends AbstractForm
 {
-    protected $input;
-    protected $attributes = array();
-    protected $name;
-
-    public function __construct($name) 
+    public function render($name = null)
     {
-        $this->name = $name;
-        $this->attributes['name'] = $name;
-    }
-    
-    public function getName()
-    {
-        return $this->name;
-    }
+        $html = '<input';
 
-
-    private function openTag() 
-    {
-        $this->input = '<input';
-        
         foreach($this->attributes as $name => $valor) {
-            $this->input .= " {$name}=\"$valor\"";            
+            $html .= " {$name}=\"$valor\"";
         }
+
+        $html .= '>';
+
+        return $html;
     }
-    
-    private function closeTag() 
+
+    public function createField(AbstractForm $field)
     {
-        $this->input .= '>';
-    }
-    
-    public function setAttribute($name, $value) 
-    {
-        $this->attributes[$name] = $value;
-        return $this;
-    }
-    
-    public function render() 
-    {
-        $this->openTag();
-        $this->closeTag();
-        return $this->input;
+        throw new \DomainException('Voce nao pode adicionar campos a esse campo');
     }
 }

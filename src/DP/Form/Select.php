@@ -2,40 +2,10 @@
 
 namespace DP\Form;
 
-class Select implements InterfaceFormElement
+class Select extends AbstractForm
 {
-    protected $select;
-    protected $attributes = array();
     protected $options;
-    protected $name;
-    
-    public function __construct($name) 
-    {
-        $this->name = $name;
-        $this->attributes['name'] = $name;
-    }
-    
-    public function getName()
-    {
-        return $this->name;
-    }
-    
-    private function openTag() 
-    {
-        $this->select = '<select';
-        
-        foreach ($this->attributes as $name => $value) {
-            $this->select .= " {$name}=\"{$value}\"";
-        }
-        
-        $this->select .= '>';
-    }
-    
-    private function closeTag()
-    {
-        $this->select .= '</select>';
-    }
-    
+
     public function setOptions(array $options) 
     {
         foreach ($options as $value => $option) {
@@ -44,19 +14,26 @@ class Select implements InterfaceFormElement
         
         return $this;
     }
-
-    public function setAttribute($name, $value) 
-    {
-        $this->attributes[$name] = $value;
-        return $this;
-    }
     
-    public function render() 
+    public function render($name = null)
     {
-        $this->openTag();
-        $this->select .= $this->options;
-        $this->closeTag();
+        $html = '<select';
+
+        foreach ($this->attributes as $name => $value) {
+            $html .= " {$name}=\"{$value}\"";
+        }
+
+        $html .= '>';
+
+        $html .= $this->options;
+
+        $html .= '</select>';
         
-        return $this->select;
+        return $html;
+    }
+
+    public function createField(AbstractForm $field)
+    {
+        throw new \DomainException('Voce nao pode adicionar campos a esse campo');
     }
 }

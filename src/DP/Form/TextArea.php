@@ -2,48 +2,23 @@
 
 namespace DP\Form;
 
-class TextArea implements InterfaceFormElement
+class TextArea extends AbstractForm
 {
-    protected $attributes = array();
-    protected $textArea;
-    protected $name;
-
-    public function __construct($name) 
+    public function render($name = null)
     {
-        $this->name = $name;
-        $this->attributes['name'] = $name;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    private function openTag() 
-    {
-        $this->textArea = '<textarea';
+        $html = '<textarea';
         foreach ($this->attributes as $name => $value) {
-            $this->textArea .= " {$name}=\"{$value}\"";
+            $html .= " {$name}=\"{$value}\"";
         }
-        $this->textArea .= '>';
+        $html .= '>';
+
+        $html .= '</textarea>';
+
+        return $html;
     }
-    
-    private function closeTag() 
+
+    public function createField(AbstractForm $field)
     {
-        $this->textArea .= '</textarea>';
-    }
-    
-    public function setAttribute($name, $value) 
-    {
-        $this->attributes[$name] = $value;
-        return $this;
-    }
-    
-    public function render()
-    {
-        $this->openTag();
-        $this->closeTag();
-        
-        return $this->textArea;
+        throw new \DomainException('Voce nao pode adicionar campos a esse campo');
     }
 }
