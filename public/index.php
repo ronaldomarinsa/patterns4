@@ -4,15 +4,24 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $di = new Aura\Di\Container(new Aura\Di\Factory());
 $di->set('form', new \DP\Form\Form(
     new DP\Validator\Validator(new DP\Request\Request())
-    ));
+    ,'contato'));
+
+/**@var $form \DP\Form\Form*/
 
 $form = $di->get('form');
-$form->setAttribute('name', 'contato');
 $form->setAttribute('method', 'post');
 
 $inputText = new DP\Form\Input('nome');
 $inputText->setAttribute('type', 'text')
-            ->setAttribute('required', 'required');            
+            ->setAttribute('required', 'required');
+
+$inputTextEmail = new \DP\Form\Input('email');
+$inputTextEmail->setAttribute('type', 'text')
+    ->setAttribute('required', 'required');
+
+$fieldset = new \DP\Form\FieldSet('field');
+
+$fieldset->createField($inputText);
 
 $inputSubmit = new DP\Form\Input('enviar');
 $inputSubmit->setAttribute('type', 'submit')                
@@ -34,12 +43,13 @@ $radioM = new DP\Form\Input('sexo');
 $radioM->setAttribute('type', 'radio')
         ->setAttribute('value', 'm');
 
-$form->createField($inputText);
-$form->createField($inputSubmit);
-$form->createField($textArea);
-$form->createField($select);
-$form->createField($radioF);
-$form->createField($radioM);
+$form->createField($fieldset)
+        ->createField($inputSubmit)
+        ->createField($textArea)
+        ->createField($select)
+        ->createField($radioF)
+        ->createField($radioM)
+        ->createField($inputTextEmail);
 
 require_once __DIR__ . '/../layout/header.phtml';
 require_once __DIR__ . '/../view/contato.phtml';
