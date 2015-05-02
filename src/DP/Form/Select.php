@@ -2,18 +2,18 @@
 
 namespace DP\Form;
 
-class Select extends AbstractForm
+class Select extends AbstractForm implements SelectInterface
 {
     protected $options;
 
-    public function setOptions(array $options) 
+    public function setValueOptions(array $options) 
     {
         foreach ($options as $value => $option) {
             $this->options .= "<option value=\"{$value}\">{$option}</option>";
         }
         
         return $this;
-    }
+    }    
     
     public function render($name = null)
     {

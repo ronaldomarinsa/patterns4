@@ -2,54 +2,84 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $di = new Aura\Di\Container(new Aura\Di\Factory());
-$di->set('form', new \DP\Form\Form(
-    new DP\Validator\Validator(new DP\Request\Request())
-    ,'contato'));
+$di->set('helper-list', function () use($di) {
+    return new DP\Helper\HtmlListHelper();
+});
 
-/**@var $form \DP\Form\Form*/
+$di->set('db', new \PDO("sqlite:" . __DIR__ . "/../dp"));
 
+$categorias = $di->set('categorias', function () use ($di) {
+   $db = $di->get('db'); 
+   $stmt = $db->query("select * from categoria");
+   return $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    
+});
+
+$di->set('request', new DP\Request\Request());
+$di->set('validator', new DP\Validator\Validator($di->get('request')));
+
+$inArray = new DP\Validator\InArray();
+$inArray->setData(array_keys($di->get('categorias')))
+        ->setName('categoria');
+
+$stringLength = new DP\Validator\StringLength(200);
+$stringLength->setName('descricao');
+$currency = new \DP\Validator\Currency();
+$currency->setName('valor');
+
+$validator = $di->get('validator');
+$validator->add($inArray)
+        ->add($stringLength)
+        ->add($currency);
+$di->set('contato-validator', $validator);
+
+$di->set('form', new \DP\Form\Form($di->get('contato-validator'),'contato'));
+
+/** @var $form \DP\Form\Form */
 $form = $di->get('form');
 $form->setAttribute('method', 'post');
 
-$inputText = new DP\Form\Input('nome');
-$inputText->setAttribute('type', 'text')
-            ->setAttribute('required', 'required');
+$nome = new \DP\Form\Input('nome');
+$nome->setAttribute('type', 'text');
 
-$inputTextEmail = new \DP\Form\Input('email');
-$inputTextEmail->setAttribute('type', 'text')
-    ->setAttribute('required', 'required');
+$valor = new \DP\Form\Input('valor');
+$valor->setAttribute('type', 'text');
 
-$fieldset = new \DP\Form\FieldSet('field');
+$descricao = new \DP\Form\Input('descricao');
+$descricao->setAttribute('type', 'text');
 
-$fieldset->createField($inputText);
+$categoria = new \DP\Form\Select('categoria');
+$categoria->setValueOptions($di->get('categorias'));
 
-$inputSubmit = new DP\Form\Input('enviar');
-$inputSubmit->setAttribute('type', 'submit')                
-                ->setAttribute('value', 'Enviar')
-                ->setAttribute('class', 'btn');
+$enviar = new \DP\Form\Input('enviar');
+$enviar->setAttribute('type', 'submit')
+    ->setAttribute('value', 'Cadastrar')
+    ->setAttribute('class', 'btn-info');
 
-$textArea = new DP\Form\TextArea('descricao');
+$form->createField($nome)
+    ->createField($valor)
+    ->createField($descricao)
+    ->createField($categoria)
+    ->createField($enviar);
 
-$textArea->setAttribute('rows', '4')
-            ->setAttribute('cols', '50');
+/** @var $request \DP\Request\Request*/
+$request = $di->get('request');
 
-$select = new \DP\Form\Select('cidade');
-$select->setOptions(array('Sao Paulo', 'Rio de Janeiro', 'Manaus', 'Belo Horizonte'));
+$messages = ['success' => 'The data has been submitted successfully'];
+$helper = $di->get('helper-list');
 
-$radioF = new DP\Form\Input('sexo');
-$radioF->setAttribute('type', 'radio')
-        ->setAttribute('value', 'f');
-$radioM = new DP\Form\Input('sexo');
-$radioM->setAttribute('type', 'radio')
-        ->setAttribute('value', 'm');
+if($request->isPost()) {
+    $post = $request->getPost();
+    $form->populate($post->getData());
+    
+    if(!$form->isValid()) {
+        $messages = $form->getValidator()->getMessages();
+    }    
+}
 
-$form->createField($fieldset)
-        ->createField($inputSubmit)
-        ->createField($textArea)
-        ->createField($select)
-        ->createField($radioF)
-        ->createField($radioM)
-        ->createField($inputTextEmail);
+if($request->isGet()) {
+    $get = $request->getGet();
+}
 
 require_once __DIR__ . '/../layout/header.phtml';
 require_once __DIR__ . '/../view/contato.phtml';

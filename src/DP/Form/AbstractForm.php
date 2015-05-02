@@ -5,6 +5,9 @@ namespace DP\Form;
 abstract class AbstractForm
 {
     protected $attributes = [] ;
+    /**
+     * @var AbstractForm | array
+     */
     protected $fields = [];
     protected $label;
 
