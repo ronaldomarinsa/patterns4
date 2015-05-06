@@ -42,16 +42,9 @@ class Form extends AbstractForm
     
     public function populate(array $data)
     {
-        foreach ($this->fields as $field) {
-            if(array_key_exists($field->getName(), $data)) {
-                
-                if($field instanceof SelectInterface && is_array($data[$field->getName()])) {
-                    $field->setValueOptions($data[$field->getName()]);
-                } else {
-                    $field->setAttribute('value', $data[$field->getName()]);
-                }
-            }
-        }
+         foreach ($this->fields as $field) {
+             $field->populate($data);
+         }
         
         $this->validator->populate($data);
     }

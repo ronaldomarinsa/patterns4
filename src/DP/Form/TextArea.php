@@ -4,6 +4,8 @@ namespace DP\Form;
 
 class TextArea extends AbstractForm
 {
+    private $content;
+    
     public function render($name = null)
     {
         $html = '<textarea';
@@ -11,7 +13,9 @@ class TextArea extends AbstractForm
             $html .= " {$name}=\"{$value}\"";
         }
         $html .= '>';
-
+        
+        $html .= $this->content;
+        
         $html .= '</textarea>';
 
         return $html;
@@ -20,5 +24,29 @@ class TextArea extends AbstractForm
     public function createField(AbstractForm $field)
     {
         throw new \DomainException('Voce nao pode adicionar campos a esse campo');
+    }
+    
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    public function setContent($content)
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+        
+    public function populate(array $data)
+    {
+        if(array_key_exists($this->getName(), $data)) {
+            
+            if(!is_scalar($data[$this->getName()])) {
+                throw new \InvalidArgumentException('The value must be of the type scalar');
+            } else {
+                $this->setContent($data[$this->getName()]);;
+            }
+        }
     }
 }

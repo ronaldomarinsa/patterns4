@@ -21,4 +21,11 @@ class Input extends AbstractForm
     {
         throw new \DomainException('Voce nao pode adicionar campos a esse campo');
     }
+    
+    public function populate(array $data)
+    {
+        if(array_key_exists($this->getName(), $data)) {
+            $this->setAttribute('value', $data[$this->getName()]);
+        }
+    }
 }

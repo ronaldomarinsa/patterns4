@@ -22,4 +22,11 @@ class FieldSet extends AbstractForm
 
         return $html;
     }
+    
+    public function populate(array $data)
+    {
+        foreach ($this->fields as $field) {
+            $field->populate($data);
+        }
+    }
 } 

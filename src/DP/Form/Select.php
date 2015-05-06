@@ -5,13 +5,11 @@ namespace DP\Form;
 class Select extends AbstractForm implements SelectInterface
 {
     protected $options;
-
-    public function setValueOptions(array $options) 
-    {
-        foreach ($options as $value => $option) {
-            $this->options .= "<option value=\"{$value}\">{$option}</option>";
-        }
-        
+    protected $selected;
+    
+    public function setValueOptions(array $options)
+    {        
+        $this->options = $options;
         return $this;
     }    
     
@@ -24,8 +22,18 @@ class Select extends AbstractForm implements SelectInterface
         }
 
         $html .= '>';
-
-        $html .= $this->options;
+        
+        foreach ($this->options as $value => $option) {
+            
+            if($value == $this->selected) {
+                $html .= "<option value=\"{$value}\" selected=\"selected\">{$option}</option>";
+            } else {
+                $html .= "<option value=\"{$value}\">{$option}</option>";
+                
+            }
+            
+        }
+        
 
         $html .= '</select>';
         
@@ -35,5 +43,22 @@ class Select extends AbstractForm implements SelectInterface
     public function createField(AbstractForm $field)
     {
         throw new \DomainException('Voce nao pode adicionar campos a esse campo');
+    }
+    
+    public function setSelected($selected)
+    {
+        $this->selected = $selected;
+        return $this;
+    }
+    
+    public function populate(array $data)
+    {        
+        if(array_key_exists($this->getName(), $data)) {
+            if(!is_scalar($data[$this->getName()])) {
+                throw new \InvalidArgumentException('The value has passed must be of the type scalar');
+            } else {
+                $this->setSelected($data[$this->getName()]);
+            }
+        }
     }
 }

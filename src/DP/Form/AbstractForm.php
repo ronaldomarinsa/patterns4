@@ -2,7 +2,7 @@
 
 namespace DP\Form;
 
-abstract class AbstractForm
+abstract class AbstractForm implements PopulateInterface
 {
     protected $attributes = [] ;
     /**
