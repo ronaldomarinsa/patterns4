@@ -56,11 +56,14 @@ $enviar->setAttribute('type', 'submit')
     ->setAttribute('value', 'Cadastrar')
     ->setAttribute('class', 'btn-info');
 
-$form->createField($nome)
-    ->createField($valor)
-    ->createField($descricao)
-    ->createField($categoria)
-    ->createField($enviar);
+$fieldset = new \DP\Form\FieldSet('contato');
+$fieldset->createField($nome)
+        ->createField($valor)
+        ->createField($descricao)
+        ->createField($categoria)
+        ->createField($enviar);
+
+$form->createField($fieldset);
 
 /** @var $request \DP\Request\Request*/
 $request = $di->get('request');

@@ -2,7 +2,7 @@
 
 namespace DP\Form;
 
-abstract class AbstractForm implements PopulateInterface
+abstract class AbstractForm
 {
     protected $attributes = [] ;
     /**
@@ -29,10 +29,25 @@ abstract class AbstractForm implements PopulateInterface
 
     public function createField(AbstractForm $field)
     {
-        $this->fields[] = $field;
+        $this->fields[$field->getName()] = $field;
 
         return $this;
     }
-
-    abstract function render($name = null);
+    
+    public function getField($name)
+    {
+        if(array_key_exists($name, $this->fields)) {
+            return $this->fields[$name];
+        }
+        
+        throw new \InvalidArgumentException("There is not a field named \"{$name}\"");
+    }
+    
+    public function populate(array $data)
+    {
+        foreach ($this->fields as $field) {
+            $field->populate($data);
+        }
+    }
+    
 } 

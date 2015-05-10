@@ -29,25 +29,6 @@ class Form extends AbstractForm
     {
         return '</form>';
     }
-
-    public function render($name = null)
-    {
-        foreach($this->fields as $key => $field) {
-            if($field->getName() == $name) {
-                unset($this->fields[$key]);
-                return $field->render();
-            }
-        }
-    }
-    
-    public function populate(array $data)
-    {
-         foreach ($this->fields as $field) {
-             $field->populate($data);
-         }
-        
-        $this->validator->populate($data);
-    }
     
     public function isValid()
     {
@@ -57,5 +38,11 @@ class Form extends AbstractForm
     public function getValidator()
     {
         return $this->validator;
+    }
+    
+    public function populate(array $data)
+    {
+        parent::populate($data);
+        $this->validator->populate($data);
     }
 }

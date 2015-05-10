@@ -2,7 +2,7 @@
 
 namespace DP\Form;
 
-class Select extends AbstractForm implements SelectInterface
+class Select extends AbstractForm implements SelectInterface, RenderInterface
 {
     protected $options;
     protected $selected;

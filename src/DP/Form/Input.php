@@ -2,7 +2,7 @@
 
 namespace DP\Form;
 
-class Input extends AbstractForm
+class Input extends AbstractForm implements RenderInterface
 {
     public function render($name = null)
     {

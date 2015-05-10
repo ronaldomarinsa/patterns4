@@ -4,29 +4,20 @@ namespace DP\Form;
 
 class FieldSet extends AbstractForm
 {
-    public function render($name = null)
+
+    public function openTag()
     {
         $html = '<fieldset';
 
-        foreach($this->attributes as $name => $value) {
+        foreach ($this->attributes as $name => $value) {
             $html .= " $name=\"$value\"";
         }
 
-        $html .= '>';
-
-        foreach($this->fields as $field) {
-            $html .= $field->render();
-        }
-
-        $html .= '</fieldset>';
-
-        return $html;
+        return $html .= '>';
     }
-    
-    public function populate(array $data)
+
+    public function closeTag()
     {
-        foreach ($this->fields as $field) {
-            $field->populate($data);
-        }
+        return '</fieldset>';
     }
-} 
+}

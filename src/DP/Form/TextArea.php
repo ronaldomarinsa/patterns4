@@ -2,7 +2,7 @@
 
 namespace DP\Form;
 
-class TextArea extends AbstractForm
+class TextArea extends AbstractForm  implements RenderInterface
 {
     private $content;
     
