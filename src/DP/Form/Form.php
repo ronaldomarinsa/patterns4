@@ -4,7 +4,7 @@ namespace DP\Form;
 
 use DP\Validator\Validator;
 
-class Form extends AbstractForm
+class Form extends AbstractForm implements RenderTagsInterface
 {
     protected $validator;
     protected $data = [];

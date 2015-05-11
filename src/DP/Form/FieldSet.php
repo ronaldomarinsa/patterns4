@@ -2,7 +2,7 @@
 
 namespace DP\Form;
 
-class FieldSet extends AbstractForm
+class FieldSet extends AbstractForm implements RenderTagsInterface
 {
 
     public function openTag()
